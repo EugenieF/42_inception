@@ -175,12 +175,10 @@ Every component of the stack communicates with each other :
 <p align="center">
     <img src="./images/LEMP_stack.png" alt="LEMP_stack" width=55% height=55%>
 </p>
-
 </details>
 
 <details>
-<summary><h2><img align="left" src="./images/nginx_logo.png" alt="NGINX logo" width=3% height=3%>NGINX</h2></summary>
-
+    <summary><h2><img align="left" src="./images/nginx_logo.png" alt="nginx_logo" width=3% height=3%>NGINX</h2></summary>
 <h3> 🔐 SSL / TLS </h3>
 The **server certificate** is a public entity. It is sent to every client that connects to the server.
 
@@ -271,11 +269,11 @@ or
 SELECT * FROM my_table;
 - SHOW TABLES;
 
-<img align="left" src="./images/wordpress_logo.png" alt="wordpress logo" width=5% height=5%>
 </details>
 
 <details>
-<summary><h2> PHP-WORDPRESS</h2></summary>
+<summary><h2><img align="left" src="./images/wordpress_logo.png" alt="wordpress logo" width=5% height=5%>PHP-WORDPRESS</h2></summary>
+
 WordPress is a Content Management System (CMS). It is a PHP based application written entirely in PHP. WordPress requires php-extensions to work properly.
 
 WP-Cli : WordPress command line interface
