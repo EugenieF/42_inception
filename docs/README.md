@@ -1,5 +1,6 @@
 
-![Inception](images/inception_title.png "Inception")
+![Inception](images/inceptionTitle.png "Inception")
+
 🏁  Subject : Creating a docker-based WordPress LEMP stack using docker-compose on Alpine Linux or Debian Buster. The whole project has to be done in our personal virtual machine.
 
 #  🐳 DOCKER
@@ -7,32 +8,37 @@
 ## 🔎 WHAT’S DOCKER ?
 Docker is a popular virtualization tool that replicates a specific operating environment on top of a host OS. Each environment is called a container. It allows you to deploy your application as a lightweight process set rather than a complete virtual machine.
 
-### ⚡️ VM vs Container
+### ⚡️ VM vs CONTAINER
 ![VM_vs_Container](images/VM_vs_container.png "VM vs Container")
 
-### 💻 Docker engine
+### 💻 DOCKER ENGINE
 ![Docker engine](images/docker_engine.png "Docker engine")
+```html
+<img src="./images/docker_engine.png" alt="docker_engine" width="320">
+```
 
-### 🏗 Docker architecture   
+### 🏗 DOCKER ARCHITECTURE
 ![Docker architecture](images/docker_architecture.png "Docker architecture")
 ![Docker definitions](images/docker_definitions.png "Docker definitions")
 
-### ⌨️ Docker commands
+### ⌨️ DOCKER COMMANDS
 ![Docker lifecycle](images/docker_lifecycle.png "Docker lifecycle")
 ![Docker commands](images/docker_commands.png "Docker commands")
 
-### 🔥 Docker advantages
+### 🔥 DOCKER ADVANTAGES
 Docker containers enable developers to focus their efforts on application “content” by separating applications from the constraints of infrastructure.
 Dockerized applications are instantly portable to any infrastructure – laptop, bare‑metal server, VM, or cloud – making them modular components that can be readily assembled and reassembled into fully featured distributed applications and continuously innovated on in real time.
 
 
 ## 📄 DOCKERFILE
 A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image. Docker can build images automatically by reading the instructions from a Dockerfile.
+
 ![What is docker container ?](images/what-is-docker-container.png "What is docker container ?")
+
 ![Dockerfile commands](images/dockerfile_commands.png "Dockerfile commands")
 
 ### ⚡️ CMD vs ENTRYPOINT
-``` http
+``` html
 💡 ENTRYPOINT + CMD = default container command arguments
 ```
 - CMD sets default command and/or parameters, which can be overwritten from command line when docker container runs. Has three forms :
@@ -44,7 +50,7 @@ A Dockerfile is a text document that contains all the commands a user could call
     - ENTRYPOINT command param1 param2 (shell form -> ignores any CMD or docker run command line arguments)
 
 When instruction is executed in shell form it calls /bin/sh -c <command>. When instruction is executed in exec form it calls executable directly, and shell processing does not happen.
-``` http
+``` html
 📌 Recap : ENTRYPOINT arguments are always used, while CMD ones can be overwritten by command line arguments provided when Docker container runs.
 ```
 
@@ -68,10 +74,10 @@ Alternatively, you can use an init-like process such as [dumb-init](https://git
 Dumb-init spawns your process as its only child, and proxies signals to it. It won’t actually die until your process dies, allowing you to do proper cleanup. It also takes care of other functions of an init system, such as reaping orphaned zombie processes.
 
 ## 🐙 DOCKER-COMPOSE
-``` http
+``` html
 💡 Docker Compose is a container orchestration technology that’s intended to run a number of containers on a single host machine.
 ```
-``` http
+``` html
 🚪 Command to enter a container : docker exec -it container_name sh
 ```
 # ♻️ LEMP STACK
@@ -93,7 +99,8 @@ The **private key** is a secure entity and should be stored in a file with restr
 https : HTTP Secure (HTTPS) = HTTP over TLS/SSL
 ssl : Secure Sockets Layer
 tls : Transport Layer Security = successor to SSL
-### 🔧 Configuration
+
+### 🔧 CONFIGURATION
 /var/www/html : Web content, which by default only consists of the default Nginx page
 
 /etc/nginx : Configuration directory. All of the Nginx configuration files reside here
@@ -123,7 +130,7 @@ MariaDB Server manages access to the MariaDB data directory that contains databa
 
 ***mysql_install_db*** initializes the MariaDB data directory and creates the system tables in the mysql database, if they do not exist.
 
-### 🔧 Configuration
+### 🔧 CONFIGURATION
 
 Some MariaDB packages bind MariaDB to 127.0.0.1 (the loopback IP address) by default as a security measure using the bind-address configuration directive. If bind-address is bound to 127.0.0.1 (localhost), one can't connect to the MariaDB server from other hosts or from the same host over TCP/IP on a different interface than the loopback (127.0.0.1).
 
@@ -143,7 +150,7 @@ Remote-connexion to the database :
 mysql -h 127.0.0.1 -u login -p
 ```
 
-### ⌨️ Commands
+### ⌨️ MARIADB COMMANDS
 - SHOW DATABASES;
 - SELECT * from my_database.my_table;
 or
@@ -160,7 +167,7 @@ We need to install ***mariadb-client*** in order to use ***mysqladmin***.
 ```html
 📄 Config file : wp-config.php
 ```
-### Php-Fpm
+### PHP-FPM
 Unlike Apache which can handle PHP processing directly, Nginx doesn't know how to run a PHP script of its own. It must rely on a separate PHP processor to handle PHP requests, like PHP-FPM.
 
 PHP-FPM is a PHP-FastCGI Process Manager. It is a PHP language interpreter and manage php requests.
@@ -175,6 +182,7 @@ PHP-FPM can listen on Unix sockets or TCP sockets (that's what we use here).
 
 # ⚙️ VM CONFIG
 
+[📌 README to setup our VM](https://github.com/llescure/42_Inception)
 - Create a new user and assign it to the different groups :
 ```bash
 sudo adduser login
