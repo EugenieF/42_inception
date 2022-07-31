@@ -1,32 +1,53 @@
 
 ![Inception](images/inceptionTitle.png "Inception")
 
-🏁  Subject : Creating a docker-based WordPress LEMP stack using docker-compose on Alpine Linux or Debian Buster. The whole project has to be done in our personal virtual machine.
+📝 *Subject : Creating a docker-based WordPress LEMP stack using docker-compose on Alpine Linux or Debian Buster. The whole project has to be done in our personal virtual machine.*
 
 #  🐳 DOCKER
 
-## 🔎 WHAT’S DOCKER ?
-Docker is a popular virtualization tool that replicates a specific operating environment on top of a host OS. Each environment is called a container. It allows you to deploy your application as a lightweight process set rather than a complete virtual machine.
+<details>
+    <summary><h2> 🔎 WHAT’S DOCKER ?</h2></summary>
+    Docker is a popular virtualization tool that replicates a specific operating environment on top of a host OS. Each environment is called a container. It allows you to deploy your application as a lightweight process set rather than a complete virtual machine.
 
 ### ⚡️ VM vs CONTAINER
-![VM_vs_Container](images/VM_vs_container.png "VM vs Container")
+<p align="center">
+    <img src="./images/VM_vs_container.png" alt="VM_vs_container" width=70% height=70%>
+</p>
+
+<p><br/><p/>
+
+<img align="right" src="./images/docker_engine.png" alt="docker_engine" width=38% height=38%>
 
 ### 💻 DOCKER ENGINE
 
-<img align="right" src="./images/docker_engine.png" alt="docker_engine" width=35% height=53%>
-
 Docker engine is a part of Docker which create and run the Docker containers. It is the layer on which Docker runs and is installed on the host machine. It plays the controller's role.
 
-- Docker CLI 👨‍💻
-Command line interface used to perform actions: running/stopping containers...
-- REST API server 💻
-Interface that programs can use to talk to the daemon and provides instructions.
-- Docker Daemon 😈
-Background process that manages docker objects: images, containers, volumes, networks...
+<p> <p/>
+
+<details>
+    <summary>Docker CLI 👨‍💻</summary>
+    <em>Command line interface used to perform actions: running/stopping containers...</em>
+</details>
+
+<details>
+    <summary>REST API server 💻</summary>
+    <em>Interface that programs can use to talk to the daemon and provides instructions.</em>
+</details>
+
+<details>
+    <summary>Docker Daemon 😈</summary>
+    <em>Background process that manages docker objects: images, containers, volumes, networks...</em>
+</details>
+
+<p><br/><br/><p/>
 
 ### 🏗 DOCKER ARCHITECTURE
-![Docker architecture](images/docker_architecture.png "Docker architecture")
-<img align="right" src="./images/docker_definitions.png" alt="docker_definition" width=35% height=35%>
+
+
+<img align="left" src="./images/docker_architecture.png" alt="docker_architecture" width=68% height=68%>
+<img align="right" src="./images/docker_definitions.png" alt="docker_definition" width=28% height=28%>
+
+
 📸  IMAGE
 - read-only
 - like a snapshot of a container’s file system and contain both your application and its dependencies
@@ -63,20 +84,29 @@ When a container is started, Docker loads the read-only image layer, adds a read
     - Named volumes : *[name:container_directory]*
 
 ### ⌨️ DOCKER COMMANDS
-![Docker lifecycle](images/docker_lifecycle.png "Docker lifecycle")
+<p align="center">
+<img src="./images/docker_lifecycle.png" alt="docker_lifecycle" width=65% height=65%>
+</p>
+
 ![Docker commands](images/docker_commands.png "Docker commands")
 
 ### 🔥 DOCKER ADVANTAGES
 Docker containers enable developers to focus their efforts on application “content” by separating applications from the constraints of infrastructure.
 Dockerized applications are instantly portable to any infrastructure – laptop, bare‑metal server, VM, or cloud – making them modular components that can be readily assembled and reassembled into fully featured distributed applications and continuously innovated on in real time.
+</details>
 
+<details>
+<summary><h2>📄 DOCKERFILE</h2></summary>
 
-## 📄 DOCKERFILE
-A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image. Docker can build images automatically by reading the instructions from a Dockerfile.
+<img align="right" src="./images/what-is-docker-container.png" alt="what-is-docker-container" width=50% height=50%>
+<p align="left">
+    <br /> A Dockerfile is a text document that contains all the commands a user could call on the command line to assemble an image. Docker can build images    automatically by reading the instructions from a Dockerfile.
+</p>
 
-![What is docker container ?](images/what-is-docker-container.png "What is docker container ?")
-
-![Dockerfile commands](images/dockerfile_commands.png "Dockerfile commands")
+<p align="center">
+    <br /> <br /> <br />  
+    <img src="./images/dockerfile_commands.png" alt="dockerfile_commands" width=70% height=70%>
+</p>
 
 ### ⚡️ CMD vs ENTRYPOINT
 ``` html
@@ -106,22 +136,34 @@ Inside your container, the process running as PID 1 has special rules and respon
 
 So, having a shell as PID 1 actually makes signaling your process almost impossible. Signals sent to the shell won’t be forwarded to the subprocess, and the shell won’t exit until your process does. To avoid this problem, you should `exec` your last process so that it replaces the shell.
 
-Alternatively, you can use an init-like process such as [dumb-init](https://github.com/Yelp/dumb-init) with signal-proxying capabilities. It is a minimal init system intended to be used in Linux containers. Instead of executing your server process directly, you instead prefix it with dumb-init in your Dockerfile, such as `CMD ["dumb-init", "/bin/sh", "script.sh"]`. This creates a process tree that looks like:
+Alternatively, you can use an init-like process such as dumb-init with signal-proxying capabilities. It is a minimal init system intended to be used in Linux containers. Instead of executing your server process directly, you instead prefix it with dumb-init in your Dockerfile, such as `CMD ["dumb-init", "/bin/sh", "script.sh"]`. This creates a process tree that looks like:
 
 - `docker run` (on the host machine)
     - `dumb-init` (PID 1, inside container)
             ‣ `/bin/sh script.sh` (PID 2, inside container)
 
 Dumb-init spawns your process as its only child, and proxies signals to it. It won’t actually die until your process dies, allowing you to do proper cleanup. It also takes care of other functions of an init system, such as reaping orphaned zombie processes.
+</details>
 
-## 🐙 DOCKER-COMPOSE
+
+<details>
+<summary><h2>🐙 DOCKER-COMPOSE</h2></summary>
+
+<img align="left" src="./images/docker_compose_logo.png" alt="Compose logo" width=5% height=5%>
+
 ``` html
 💡 Docker Compose is a container orchestration technology that’s intended to run a number of containers on a single host machine.
 ```
 ``` html
 🚪 Command to enter a container : docker exec -it container_name sh
 ```
+</details>
+
 # ♻️ LEMP STACK
+
+<details>
+    <summary><h2> 🔎 WHAT’S A LEMP STACK ?</h2></summary>
+    
 The subject requests us to create a LEMP stack :
 
 - L stands for **Linux** as the operating system
@@ -130,16 +172,39 @@ The subject requests us to create a LEMP stack :
 - P for **PHP** as a server-side scripting language that communicates with server and database
 
 Every component of the stack communicates with each other :
-![LEMP Stack](images/LEMP_stack.png "LEMP Stack")
+<p align="center">
+    <img src="./images/LEMP_stack.png" alt="LEMP_stack" width=55% height=55%>
+</p>
 
-## NGINX
-### 🔐 SSL / TLS
+</details>
+
+<details>
+<summary><h2><img align="left" src="./images/nginx_logo.png" alt="NGINX logo" width=3% height=3%>NGINX</h2></summary>
+
+<h3> 🔐 SSL / TLS </h3>
 The **server certificate** is a public entity. It is sent to every client that connects to the server.
+
 The **private key** is a secure entity and should be stored in a file with restricted access, however, it must be readable by nginx’s master process.
 
-https : HTTP Secure (HTTPS) = HTTP over TLS/SSL
-ssl : Secure Sockets Layer
-tls : Transport Layer Security = successor to SSL
+<img align="right" src="./images/http-vs-https.jpeg" alt="http vs https" width=40% height=40%>
+
+<p> <br/> <p/>
+
+    - HTTP  : Hypertext Transfer Protocol
+
+    - HTTPS : HTTP Secure (HTTPS) = HTTP over TLS/SSL
+
+    - SSL   : Secure Sockets Layer
+
+    - TLS   : Transport Layer Security = successor to SSL
+
+<p align="center">
+    <br/> <br/> <br/>
+    <img src="./images/ssl_explained.png" alt="SSL explained" width=85% height=85%>
+    <br/> <br/>
+</p>
+
+-------
 
 ### 🔧 CONFIGURATION
 /var/www/html : Web content, which by default only consists of the default Nginx page
@@ -162,8 +227,15 @@ Each location defines its own scenario of what happens to requests that are mapp
 
 The root directive specifies the file system path in which to search for the static files to serve. The request URI associated with the location is appended to the path to obtain the full name of the static file to serve.
 
-## 🦭 MARIADB
-MariaDB Server manages access to the MariaDB data directory that contains databases and tables. When MariaDB server starts, it listens for network connections from client programs and manages access to databases on behalf of those clients.
+</details>
+
+<details>
+<summary><h2><img align="left" src="./images/mariadb.png" alt="MariaDB logo" width=7% height=7%>MARIADB</h2></summary>
+
+<p>
+    <br/>
+    MariaDB Server manages access to the MariaDB data directory that contains databases and tables. When MariaDB server starts, it listens for network connections from client programs and manages access to databases on behalf of those clients.
+</p>
 
 ***mysqld*** is the actual MariaDB Server binary.
 
@@ -181,12 +253,12 @@ If you want to create a user who can access your database from remote machines i
 ```html
 📄 Config file : /etc/mysql/mariadb.conf.d/50-server.cnf
 ```
-Connexion to the database :
+Connect to Local MariaDB Database Server :
 ```bash
 docker exec -it mariadb sh
 mysql -u user [login or root] -p
-```
-Remote-connexion to the database :
+``` 
+Connect to Remote MariaDB Database Server :
 ```bash
 mysql -h 127.0.0.1 -u login -p
 ```
@@ -199,7 +271,11 @@ or
 SELECT * FROM my_table;
 - SHOW TABLES;
 
-## PHP-WORDPRESS
+<img align="left" src="./images/wordpress_logo.png" alt="wordpress logo" width=5% height=5%>
+</details>
+
+<details>
+<summary><h2> PHP-WORDPRESS</h2></summary>
 WordPress is a Content Management System (CMS). It is a PHP based application written entirely in PHP. WordPress requires php-extensions to work properly.
 
 WP-Cli : WordPress command line interface
@@ -220,10 +296,16 @@ PHP-FPM can listen on Unix sockets or TCP sockets (that's what we use here).
 📄 Config file : /etc/php/7.3/fpm/pool.d/www.conf
 ```
 ![Php processing](images/php_processing_schema.png "Php processing")
+</details>
 
-# ⚙️ VM CONFIG
+
+ # ⚙️ VM CONFIG
+
+<details>
+<summary><h2>🔩 CONFIGURATION</h2></summary>
 
 [📌 README to setup our VM](https://github.com/llescure/42_Inception)
+
 - Create a new user and assign it to the different groups :
 ```bash
 sudo adduser login
@@ -250,5 +332,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo service nginx stop
 sudo service mysql stop
 ```
+</details>
+
 # 👉🏻 RECAP’
-![Inception Recap'](images/inceptionRecap.png "Inception Recap'")
+![Inception Recap'](images/recapInception.png "Inception Recap'")
