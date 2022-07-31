@@ -13,14 +13,19 @@ Docker is a popular virtualization tool that replicates a specific operating env
 
 ### 💻 DOCKER ENGINE
 
-Docker engine is a part of Docker which create and run the Docker containers. It is the layer on which Docker runs and is installed on the host machine. It plays the controller's role.
-
 <img align="right" src="./images/docker_engine.png" alt="docker_engine" width=50% height=50%>
 
+Docker engine is a part of Docker which create and run the Docker containers. It is the layer on which Docker runs and is installed on the host machine. It plays the controller's role.
 
 ### 🏗 DOCKER ARCHITECTURE
 ![Docker architecture](images/docker_architecture.png "Docker architecture")
-![Docker definitions](images/docker_definitions.png "Docker definitions")
+<img align="right" src="./images/docker_definitions.png" alt="docker_definition" width=50% height=50%>
+📸  IMAGE
+- read-only
+- like a snapshot of a container’s file system and contain both your application and its dependencies
+- is an immutable (unchangeable) file that contains the source code, libraries, dependencies, tools, and other files needed for an application to run
+- essentially govern and shape containers
+- can exist without containers
 
 ### ⌨️ DOCKER COMMANDS
 ![Docker lifecycle](images/docker_lifecycle.png "Docker lifecycle")
