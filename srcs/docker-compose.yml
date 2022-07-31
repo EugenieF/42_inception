@@ -1,0 +1,92 @@
+version: '3.8'  # = the latest version of docker-compose
+
+# Launch order: [ MariaDB -> WordPress -> Nginx ]
+
+services:
+
+# ****************       MARIADB SERVICE       **************** #
+
+  mariadb:
+    build:
+      # Path to the directory
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    container_name: "mariadb"
+    env_file:
+        - .env
+    # Port-mapping -> host:container
+    ports:
+     - "127.0.0.1:3306:3306"
+    # Named volumes: host_volume_name:path/inside/the/container
+    volumes:
+      - mariadb_volume:/var/lib/mysql
+    networks:
+      - inception_network
+    restart: on-failure
+
+# ****************    PHP-WORDPRESS SERVICE    **************** #
+
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    container_name: "wordpress"
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:9000:9000"
+    volumes:
+      - wordpress_volume:/var/www/html
+    networks:
+      - inception_network
+    restart: on-failure
+
+
+# *****************       NGINX SERVICE       ***************** #
+
+  nginx:
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    container_name: "nginx"
+    depends_on:
+      - wordpress
+    env_file:
+      - .env 
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_volume:/var/www/html
+    networks:
+      - inception_network
+    restart: on-failure
+
+# *****************      DOCKER NETWORKS     ****************** #
+
+networks:
+  inception_network:
+    driver: bridge  # = default driver on a single host
+
+
+# *****************      DOCKER VOLUMES      ****************** #
+
+# Creation of external named volumes
+volumes:
+  mariadb_volume:
+    driver: local # = default volume driver on linux
+    driver_opts:
+      type: none
+      device: /home/efrancon/data/mariadb_volume
+      o: bind
+
+  wordpress_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/efrancon/data/wordpress_volume
+      o: bind
+
+
+# <==> docker volume create --driver local --opt type=none --opt device=/home/efrancon/data/wordpress_data --opt o=bind wordpress_data

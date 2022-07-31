@@ -1,0 +1,597 @@
+LINUX COMMAND FOR USERS/GROUPS
+gentent passwd : see list of all users
+groups : list all groups
+groups user_name : groups of user_name
+
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.6.1/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.6.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+								INCEPTION
+
+* What's Docker ?
+* Container vs Virtual Machine
+* Definition Image && Container
+* Definition Volume Docker
+* Docker commands
+* Dockerfile
+* Docker-compose
+* Inception's project requirements :
+	- Nginx
+	- MariaDB
+	- Wordpress
+
+Installation a LEMP stack :
+The LEMP software stack is a group of software that can be used to serve dynamic web pages and web applications.
+This is an acronym that describes a Linux operating system, with an Nginx web server.
+The backend data is stored in MySQL and the dynamic processing is handled by PHP.
+
+Ordre de lancement:
+mariadb -> wordpress -> nginx
+
+LXC: Linux Containers repose sur :
+-> Cgroups: Control groups
+-> Namespaces
+
+DOCKER:
+Docker is a popular virtualization tool that replicates a specific operating environment on top of a host OS. Each environment is called a container.
+It allows you to deploy your application as a lightweight process set rather than a complete virtual machine.
+Container Docker = stateless and immutable 
+
+client/server architecture
+makes deployments easier 
+
+VM vs CONTAINER:
+VM: virtualisation lourde
+-> est totalement isolée du système hôte
+-> les ressources attribuées à une machine virtuelle lui sont totalement réservées
+
+Container: virtualisation legere 
+-> il ne virtualise pas les ressources, il ne crée qu'une isolation des processus.
+-> Le conteneur partage donc les ressources avec le système hôte.
+-> Les conteneurs n'ayant pas besoin d'une virtualisation des ressources mais seulement d'une isolation
+
+
+IMAGE:
+- read-only
+- a base
+- like a snapshot of a container’s file system and contain both your application and its dependencies. When you run it, you recreate the container’s state
+- sort of a template: cannot start or run them
+- is an immutable (unchangeable) file that contains the source code, libraries, dependencies, tools, and other files needed for an application to run
+- consist of a series of layers, they represent read-only files to which a container layer is added once you use it to start up a virtual environment.
+- essentially govern and shape containers
+
+CONTAINER:
+- read-write
+- is a running image
+- is a running environment of an image
+- is an instance of the Image
+- Once you create a container, it adds a writable layer on top of the immutable image, meaning you can now modify it
+- When you run a containerized environment, you essentially create a read-write copy of that filesystem (docker image) inside the container. This adds a container layer which allows modifications of the entire copy of the image.
+- autonomous, compact, portable, lightweight
+- Once the task is complete, the container exits = a container only lives as long as the process inside it is alive.
+- a way to package application with all the necessary dependencies and configuration
+- layers of images 
+
+Images can exist without containers, whereas a container needs to run an image to exist. Therefore, containers are dependent on images and use them to construct a run-time environment and run an application.
+The two concepts exist as essential components (or rather phases) in the process of running a Docker container. Having a running container is the final “phase” of that process.
+
+
+VOLUMES:
+- for data persistence
+- use to mount, create, and share volumes between containers
+- used to persist data outside the container so it can be backed up or shared.
+- is an independent file system entirely managed by Docker and exists as a normal file or directory on the host, where data is persisted
+- When a container is started, Docker loads the read-only image layer, adds a read-write layer on top of the image stack, and mounts volumes onto the container filesystem.
+- volumes are stored in a single location (most likely /var/lib/docker/volumes/ on unix systems) and greatly facilitates managing data (backup, restore, and migration).
+= bind mount
+- folder in physical host file system is mounted into the virtual file system of docker
+- the path differs for all database
+- data gets automatically replicated
+
+3 volume types:
+* Host volumes: docker run -v host_directory:container_directory
+-> you decide where on the host file system the reference is made 
+* Anonymous volumes: docker run -v container_directory
+-> for each container a volume is generated that gets mounted (automatically generated folder: /var/lib/docker/volumes/...)
+* Named volumes: docker run -v name:container_directory
+-> you can reference the volume by name
+-> should be used in production
+
+
+DOCKER COMMANDS:
+- docker ps : list all running Docker containers
+docker ps -a : list all containers, both running and stopped
+
+- docker pull image_name: pull an image from a registry
+
+- docker images: show images
+
+- docker run = docker pulls image && starts container
+-> creates a new container from an image
+-> here we're working from images, takes an image as argument
+use: docker run --name container_name image_name
+
+"docker run -d -p 8080:80 nginx"
+
+- docker run -d : detach-mode
+-> to detach the container from the main process
+It allows you to continue using the shell while your container is running on another process
+
+- docker run -p [--publish]: allows you to bind ports from your host to the container
+-> map aport 
+Dans notre cas, nous lui avons demandé de transférer le trafic du port 8080 vers le port 80 du conteneur.
+Ainsi, en vous rendant sur l'adresse  http://127.0.0.1:8080, vous aurez la page par défaut de Nginx.
+
+- docker run -e ENV_NAME=name : to set environment variables
+
+- docker build [location of your dockerfile]
+docker build -t name_image [location of your dockerfile]
+-> creates an image from a Dockerfile
+
+- docker create: creates a container layer from an image
+
+- docker start [options] container_id : starts a stopped container
+(here we're working with containers and not images)
+
+- docker stop [options] container_id 
+
+- docker kill [option] container_id
+
+- docker system prune : clean my system
+
+- docker built -t name_image .
+  docker run -d -p 2368:2368 name_image
+		    [port_intern:port_extern]
+			[host_port:container_port]
+
+option -it = interactiv terminal
+
+docker rm container_name
+docker rmi image_name
+
+TO DEBUG: 
+- docker logs container_id (or container_name)
+- docker exec -it container_id/container_name /bin/bash	-> start a shell inside the container 
+
+DOCKERFILE:
+- is a script with instructions on how to build a Docker image
+- Docker can build images automatically by reading the instructions from a Dockerfile.
+- is a text document that contains all the commands a user could call on the command line to assemble an image
+
+DOCKERFILE COMMANDS:
+- FROM
+- RUN : execute any Linux command in the container environment (will not affect the host environment)
+- COPY : executes on the host machine !
+- CMD : executes an entrypoint linux command
+
+- ADD <srcs> / <URL>... <dest>: copies files/directories to a file system of the specified container
+An additional feature is that it copies compressed files, automatically extracting the content in the given destination. This feature only applies to locally stored compressed files/directories.
+Avoid the ADD command unless you need to extract a local tar file.
+
+- COPY <srcs>... <dest>: duplicates files/directories in a specified location in their existing format. This means that it doesn’t deal with extracting a compressed file, but rather copies it as-is
+
+Limitez au maximum le nombre d'instructions RUN , afin de limiter le nombre de layers créées, et donc de réduire la taille de notre image Docker.
+
+When you adjust the Dockerfile, you must rebuild the image
+
+INTERDEPENDANCIES:
+nginx       --> depends_on wordpress
+wordpress   --> depends_on mariadb
+
+
+Votre système d’exploitation est majoritairement composé de 2 choses :
+- un système de fichiers
+- des processus
+Une image Docker représente le système de fichiers, sans les processus. Elle contient tout ce que vous avez décidé d’y installer
+(Java, une base de donnée, un script que vous allez lancer, etc…), mais est dans un état inerte. Les images sont créées à partir
+de fichiers de configuration, nommés “Dockerfile”, qui décrivent exactement ce qui doit être installé sur le système.
+Un conteneur est l’exécution d’une image : il possède la copie du système de fichiers de l’image, ainsi que la capacité de
+lancer des processus. En gros, c’est un OS, avec lequel vous pouvez interagir. Dans ce conteneur, vous allez donc pouvoir
+interagir avec les applications installées dans l’image, exécuter des scripts, faire tourner un serveur, etc. Pour faire
+l’analogie avec le monde Java (ou le monde des langages objets en général) :
+- le “Dockerfile” est votre fichier source (vous décrivez ce que vous voulez)
+- l’image est le fichier compilé (gardé au chaud en attendant d’être utilisé)
+- le container est une instance de votre classe (vous pouvez changer ses propriétés, et appeler des méthodes)
+
+DOCKERFILE:
+[INSTRUCTION ARGUMENT]
+1. OS - Ubuntu								[FROM]			-> Layer 1
+2. Update apt								[RUN]
+3. Install packages							[RUN]			-> Layer 2
+4. Install dependencies						[RUN]			-> Layer 3
+5. Copy source code to /opt folder			[COPY]			-> Layer 4
+6. Run the web server						[ENTRYPOINT]	-> Layer 5
+
+Image layers:		   _
+1. Base 				|
+2. Packages				|
+3. Dependencies			|	Read-only
+4. Source code			|
+5. Entrypoint		   _|
+6. Container layer			Read Write
+
+CMD vs ENTRYPOINT
+CMD command param1	or	CMD ["command", "param1"]
+-> they define default command 
+CMD: the command line parameters passed will replace it entirely -> override
+ENTRYPOINT: the command line parameters will get appended
+
+NETWORKS:
+Default networks:
+- Bridge = private internal network (internal ip) -> needs port mapping
+- None = the containers aren't attached to any network -> isolated network
+- Host
+
+FILE SYSTEM:
+-> at /var/lib/docker: aufs, containers, image, volumes
+volume mounting && bind mounting:
+volume mounting: docker volumes create data_volume -> at /var/lib/docker/volumes/data_volume
+
+DOCKER COMPOSE:
+stack = ensemble de conteneurs Docker lancés via un seul et unique fichier Docker Compose.
+- docker-compose up [-p]: lance la creation de l'ensemble des conteneurs
+- docker-compose ps: affiche le statut de l'ensemble de notre stack
+- docker-compose logs -f --tail 5: affiche les logs de la stack
+- docker-compose stop: arrete l'ensemble des services
+- docker-compose down: detruit l'ensemble des ressources creees
+- docker-compose config: permet de valider la syntaxe du fichier
+
+docker-compose -f filename up
+
+LAYERED ARCHITECTURE:
+-> docker build images faster and efficiently
+-> saves disk space + time during updates
+-> re-uses from cache
+
+DOCKER ENGINE:
+Docker engine : plays the controller's role
+Docker engine is a part of Docker which create and run the the Docker containers.
+It is the layer on which Docker runs and is installed on the host machine.
+- Docker CLI		(Command line interface used to perform actions: running/stopping containers...)
+- REST API server	(interface that programs can use to talk to the daemon and provides instructions)
+- Docker Deamon		(background process that manages docker objects: images, containers, volumes, networks...)
+
+NAMESPACES:
+- Process ID 
+- Network
+- InterProcess 
+- Mount 
+- Unix Timesharing 
+
+DOCKER ORCHESTRATION:
+- Docker Swarm
+- Kubernetes: cluster, nodes 
+- Mesos 
+
+
+Docker containers enable developers to focus their efforts on application “content” by separating
+applications from the constraints of infrastructure. Dockerized applications are instantly portable
+to any infrastructure – laptop, bare‑metal server, VM, or cloud – making them modular components
+that can be readily assembled and reassembled into fully featured distributed applications and
+continuously innovated on in real time.
+
+ALPINE VS DEBIAN:
+
+alpine = light-weight
+
+Debian pros:
+
+vastly larger dev & user community   
+more packages   
+more testing   
+more derived distributions   
+more likely to still be in robust health in 10 years
+working towards reproducible builds
+better documentation
+libc more compatible than musl, less likely to trigger bugs
+more trustworthy infrastructure
+
+Alpine pros:
+
+lighter: community obsessed with footprint
+musl: more efficient libc alternative
+simpler init system: OpenRC instead of systemd
+lead dev & founder is a Docker employee
+trendy
+
+https://codewithyury.com/docker-run-vs-cmd-vs-entrypoint/
+CMD vs ENTRYPOINT :
+ENTRYPOINT + CMD = default container command arguments
+
+CMD sets default command and/or parameters, which can be overwritten
+from command line when docker container runs.
+CMD instruction allows you to set a default command, which will be 
+executed only when you run container without specifying a command.
+If Docker container runs with a command, the default command will be ignored.
+If Dockerfile has more than one CMD instruction, all but last CMD instructions are ignored.
+Has three forms:
+CMD ["executable","param1","param2"] (exec form, preferred)
+CMD ["param1","param2"] (sets additional default parameters for ENTRYPOINT in exec form)
+CMD command param1 param2 (shell form)
+
+ENTRYPOINT configures a container that will run as an executable.
+The command and parameters are not ignored when Docker container 
+runs with command line parameters (can still be ignored with option --entrypoint).
+Has two forms:
+> ENTRYPOINT ["executable", "param1", "param2"] (exec form, preferred)
+Exec form of ENTRYPOINT allows you to set commands and parameters and then use either 
+form of CMD to set additional parameters that are more likely to be changed.
+ENTRYPOINT arguments are always used, while CMD ones can be overwritten by command line 
+arguments provided when Docker container runs. 
+> ENTRYPOINT command param1 param2 (shell form -> ignores any CMD or docker run command line arguments)
+
+<instruction> <command>
+When instruction is executed in shell form it calls /bin/sh -c <command> 
+under the hood and normal shell processing happens.
+
+<instruction> ["executable", "param1", "param2", ...]
+When instruction is executed in exec form it calls executable directly, 
+and shell processing does not happen.
+
+LINUX PID 1 process ?
+The process with PID 1 differs from the other processes in the following ways:
+> When the process with pid 1 die for any reason, all other processes are killed with KILL signal
+> When any process having children dies for any reason, its children are reparented to process with PID 1
+> Many signals which have default action of Term do not have one for PID 1.
+-> it means you can’t stop process by sending SIGTERM or SIGINT, if process have not installed a signal handler
+Pour un système d'exploitation normal, ce processus est le système init, par exemple, systemd ou SysV.
+De même, le premier processus lancé dans un conteneur se voit attribuer le PID 1.
+Docker et Kubernetes ne peuvent envoyer de signaux qu'au processus du conteneur portant le PID 1.
+
+------------------------------------------------------------------------------------------------------------------
+
+The server certificate is a public entity. It is sent to every client that connects to the server.
+The private key is a secure entity and should be stored in a file with restricted access, however, it must be readable by nginx’s master process.
+
+https : HTTP Secure (HTTPS) HTTP over TLS/SSL
+ssl : Secure Sockets Layer
+tls : Transport Layer Security = successor to SSL
+
+Forward Proxy vs Reverse Proxy :
+A reverse proxy is a type of proxy server.  Unlike a traditional proxy server, which is used to protect clients, 
+a reverse proxy is used to protect servers.
+
+FastCGI = one of the most common proxying protocols
+Unlike Apache, which can handle PHP processing directly with the use of the mod_php module, 
+Nginx must rely on a separate PHP processor to handle PHP requests. 
+Most often, this processing is handled with php-fpm, a PHP processor that has been extensively tested to work with Nginx.
+
+the request URI = the part of the request that comes after the domain name or IP address/port
+location optional_modifier location_match {
+    . . .
+}
+The modifiers indicate how the location block should be interpreted
+
+By default, Nginx will serve regular expression matches in preference to prefix matches. However, it evaluates prefix locations first, 
+allowing for the administer to override this tendency by specifying locations using the = and ^~ modifiers.
+
+NGINX.CONF FILE
+
+/var/www/html:			The actual web content, which by default only consists of the default Nginx page
+/etc/nginx:				The NGINX configuration directory. All of the Nginx configuration files reside here
+/etc/nginx/nginx.conf:	The main NGINX configuration file
+
+BLOCK SERVER:
+server{
+	listen IP_address:port -> default = 0.0.0.0:80 [default_server];
+	server_name "";
+}
+
+nginx test first IP_adress:port, then the server_name (if not found  the request will be processed by the default_server)
+If the default server isn't defined, it is the first server.
+A default server is a property of the listen port, and different default servers may be defined for different ports.
+
+BLOCK LOCATION:
+Nginx first searches for the most specific prefix location given by literal strings regardless of the listed order.
+Then nginx checks locations given by regular expression in the order listed in the configuration file.
+The first matching expression stops the search and nginx will use this location.
+If no regular expression matches a request, then nginx uses the most specific prefix location found earlier.
+
+URI: Uniforn Resource Identifier = a unique sequence of characters that identifies a logical or physical resource used by web technologies.
+URL: Uniform Resource Location = provides the location of the resource
+
+location ~ \.php$ {
+        fastcgi_pass  localhost:9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include       fastcgi_params;
+    }
+A request “/index.php” is also matched by the prefix location “/” first and then by the regular expression “\.(php)$”.
+Therefore, it is handled by the latter location and the request is passed to a FastCGI server listening on localhost:9000.
+The fastcgi_param directive sets the FastCGI parameter SCRIPT_FILENAME to “/data/www/index.php”, and the FastCGI server executes the file.
+The variable $document_root is equal to the value of the root directive and the variable $fastcgi_script_name is equal to the request URI, i.e. “/index.php”.
+
+/etc/nginx/nginx.conf = text‑based configuration file written in a particular format. Includes directives and contexts.
+The configuration file consists of directives and their parameters.
+A few top‑level directives, referred to as contexts, group together the directives that apply to different traffic types:
+events – General connection processing
+http – HTTP traffic
+mail – Mail traffic
+stream – TCP and UDP traffic
+
+At a high level, configuring NGINX as a web server is a matter of defining which URLs it handles and how it processes HTTP requests for resources at those URLs.
+At a lower level, the configuration defines a set of virtual servers that control the processing of requests for particular domains or IP addresses
+
+For HTTP traffic (the http context), each server directive controls the processing of requests for resources at particular domains or IP addresses.
+One or more location contexts in a server context define how to process specific sets of URIs.
+Each virtual server for HTTP traffic defines special configuration instances called locations that control processing of specific sets of URIs.
+Each location defines its own scenario of what happens to requests that are mapped to this location. 
+
+
+directive location: can be a path or a regex
+There are two types of parameter to the location directive: prefix strings (pathnames) and regular expressions.
+For a request URI to match a prefix string, it must start with the prefix string.
+A regular expression is preceded with the tilde (~) for case-sensitive matching, or the tilde-asterisk (~*) for case-insensitive matching. 
+
+SERVER_NAME:
+The parameter to server_name can be a full (exact) name, a wildcard, or a regular expression.
+If several names match the Host header, NGINX selects one by searching for names in the following order and using the first match it finds:
+- Exact name
+- Longest wildcard starting with an asterisk, such as *.example.org
+- Longest wildcard ending with an asterisk, such as mail.*
+- First matching regular expression (in order of appearance in the configuration file)
+If the Host header field does not match a server name, NGINX routes the request to the default server for the port on which the request arrived.
+The default server is the first one listed in the nginx.conf file, unless you include the default_server parameter to the listen directive to explicitly designate a server as the default.
+
+Higher priority is given to regular expressions, unless the ^~ modifier is used. Among the prefix strings NGINX Plus selects the most specific one (that is, the longest and most complete string).
+The exact logic for selecting a location to process a request is given below:
+- Test the URI against all prefix strings.
+- The = (equals sign) modifier defines an exact match of the URI and a prefix string. If the exact match is found, the search stops.
+- If the ^~ (caret-tilde) modifier prepends the longest matching prefix string, the regular expressions are not checked.
+- Store the longest matching prefix string.
+- Test the URI against regular expressions.
+- Stop processing when the first matching regular expression is found and use the corresponding location.
+- If no regular expression matches, use the location corresponding to the stored prefix string.
+
+The root directive specifies the file system path in which to search for the static files to serve. The request URI associated with the location is appended to the path to obtain the full name of the static file to serve.
+In the example above, in response to a request for /images/example.png, NGINX Plus delivers the file /data/images/example.png.
+
+Variable $uri holds the current URI value
+
+
+PHP-FROM
+Nginx doesn't know how to run a PHP script of its own. It needs a PHP module like PHP-FPM to efficiently manage PHP.
+PHP-FPM runs outside the NGINX environment by creating its own process.
+Therefore when a user requests a PHP page the nginx server will pass the request to PHP-FPM service using FastCGI.
+Nginx server will handle HTTP requests only, while PHP-FPM interprets the PHP code.
+
+The php-fpm service creates a default resource pool
+= the file /etc/php/7.3/fpm/pool.d/www.conf to modify
+PHP-FPM can listen on Unix sockets or TCP sockets (that's what we use).
+
+WORDPRESS
+MySQL query
+WordPress Database organizes information into a series of “database tables”
+file wp-config.php
+
+MariaDB
+Configuration file = 50-server.cnf 
+
+To configure Wordpress:
+- Create a MySQL Database and User for WordPress (shell script in folder MariaDB)
+- Install php and Wordpress
+- Copy the Files to the Document Root
+- Modify Nginx Server Blocks
+
+La configuration de PHP-FPM se fait depuis le fichier www.conf
+/etc/php/7.3/fpm/php-fpm.conf
+/etc/php/7.3/fpm/pool.d/www.conf
+
+PHP-FPM = PHP-FastCGI Process Manager -> a PHP language interpreter -> TO MANAGE PHP REQUESTS
+PHP-FPM runs as a separate process from Nginx
+the Nginx web server only handles the HTTP requests and PHP-FPM interprets the PHP code.
+
+WordPress is a Content Management System (CMS). It is a PHP based application written entirely in PHP.
+
+MARIADB:
+/usr/local/bin contains binaries of the third-party apps we install.
+Any local executable that didn't come with the Linux install may get it's place here.
+mariadbd is the name of the binary, with mysqld a symlink
+
+mysqld = MariaDB Server
+mysqld is the actual MariaDB Server binary. It can be started manually on its own.
+mysqld daemon
+is the main program that does most of the work in a MariaDB installation.
+MariaDB Server manages access to the MariaDB data directory that contains databases and tables.
+When MariaDB server starts, it listens for network connections from client programs and manages access to databases on behalf of those clients.
+
+mysqld_safe: starts mysqld with some extra safety features ==>  is the recommended way to start mysqld
+The script has some built-in safeguards, such as automatically restarting the server process if it dies.
+
+mysql_install_db is the symlink, and mariadb-install-db the binary name
+mysql_install_db initializes the MariaDB data directory and creates the system tables in the mysql database, if they do not exist
+mysql_install_db works by starting MariaDB Server's mysqld process in --bootstrap mode and sending commands to create the system tables and their content
+--bootstrap: Used by mysql installation scripts, such as mysql_install_db to execute SQL scripts before any privilege or system tables exist. Do no use while an existing MariaDB instance is running.
+
+command mariadb = command mysqld
+
+Configuration du serveur pour accepter les connexions extérieures:
+Par défaut, le serveur n’accepte pas les connexion extérieures, ou plutôt, il n’accepte que les connexions locales
+(depuis l’adresse de LoopBack : localhost = 127.0.0.1).
+Par défaut, MySQL n'écoute que les connexions venant de localhost (127.0.0.1), c'est-à-dire du système sur lequel il est installé.
+Sous Debian, deux fichiers nous intéressent :
+- /etc/mysql/my.cnf : fichier de configuration principal
+- /etc/mysql/mariadb.conf.d/50-server.cnf : fichier de configuration du démon du serveur, qui contient notamment les instruction de ce dernier après le mot clé [mysqld]
+PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'my-new-password' WITH GRANT OPTION;
+Dans l’exemple ci-dessus : root peut se connecter de n’importe où (%) à toutes les tables de toutes les bases (*.*).
+Pour forcer mysql à écouter sur toutes les interfaces réseau, il suffit de commenter la ligne "bind-address = 127.0.0.1" (ou écrire bind-address = 0.0.0.0) Cela peut être dangereux si votre serveur est connecté à Internet directement.
+MYSQLD:
+mysqld, also known as MySQL Server, is the main program that does most of the work in a MySQL installation.
+MySQL Server manages access to the MySQL data directory that contains databases and tables.
+
+
+Create User with Remote-Access in MariaDB:
+If you want to create a user who can access your database from remote machines in MariaDB, then you can simply remove ‘localhost’ and add ‘%’.
+Now the user can access the specified database from remote machines too.
+
+Configuring MariaDB for Remote Client Access
+bind-address = 0.0.0.0
+
+Some MariaDB packages bind MariaDB to 127.0.0.1 (the loopback IP address) by default as a security measure using the bind-address configuration directive.
+Old MySQL packages sometimes disabled TCP/IP networking altogether using the skip-networking directive.
+Skip-networking just tells MariaDB to run without any of the TCP/IP networking options.
+
+If bind-address is bound to 127.0.0.1 (localhost), one can't connect to the MariaDB server from other hosts or from the same host over TCP/IP on a different interface than the loopback (127.0.0.1).
+The database will not accept incoming connections until the initialization is complete
+
+Creating Database Dumps: $ docker exec some-mysql sh -c 'exec mysqldump --all-databases -uroot -p"$MYSQL_ROOT_PASSWORD"' > /some/path/on/your/host/all-databases.sql
+Restoring Data from Dump Files: $ docker exec -i some-mysql sh -c 'exec mysql -uroot -p"$MYSQL_ROOT_PASSWORD"' < /some/path/on/your/host/all-databases.sql
+
+WP-Cli : WordPress command line interface
+Config PHP-WORDPRESS : www.conf, wp-config.php
+https://www.linode.com/docs/guides/how-to-install-wordpress-using-wp-cli-on-debian-10/
+https://zeropointdevelopment.com/required-php-extensions-for-wordpress-wpquickies/
+
+We modify the database connection settings at the top of the file. You need to adjust the database name, the database user, and the associated password that you’ve configured within MariaDB.
+the PHP-FPM server listen over the network rather than on a Unix socket.
+
+UNIX SOCKET vs TCP/IP SOCKET
+A UNIX socket (= Unix Domain Socket) is an inter-process communication mechanism that allows bidirectional data exchange between processes running on the same machine.
+
+IP sockets (especially TCP/IP sockets) are a mechanism allowing communication between processes over the network.
+In some cases, you can use TCP/IP sockets to talk with processes running on the same computer (by using the loopback interface).
+
+UNIX domain sockets know that they’re executing on the same system, so they can avoid some checks and operations (like routing); which makes them faster and lighter than IP sockets. 
+
+installer mariadb-client pour pouvour utiliser mysqladmin
+
+mysqldump = database backup file
+Export : mysqldump -u user -p password database_name > my_dump.sql
+Import : mysql -u user -p password database_name < my_dump.sql
+
+
+We can see nginx logs in container logs:
+to see access.log : docker logs [-f] nginx 2>/dev/null
+to see error.log : docker logs [-f] nginx 1>/dev/null
+
+To enter a container:
+docker exec -it nomducontainer sh
+
+https://petermalmgren.com/signal-handling-docker/
+PID 1 Signal Handling in Docker
+If your container process runs with PID 1, surprising things can happen!
+PID 1 processes in Linux do not have any default signal handlers and as a result will not receive and propogate signals.
+They are also expected to take on certain responsibilities, such as adopting orphaned processes, and reaping zombie processes.
+https://engineeringblog.yelp.com/2016/01/dumb-init-an-init-for-docker.html
+
+
+https://github.com/42cursus/inception/tree/c38dcb638748b8fe091ca9a12049ffb6835cd3f5
+The Docker configured driver reads the data broadcast by the container’s stdout or stderr streams and writes it to a file on the host machine.
+
+Before the website is made public, you can view a development or pre-launch website with a custom domain name by modifying the /etc/hosts file on your 
+local machine to point the custom domain name to the IP address of the environment you want to test. The /etc/hosts file contains a mapping of IP addresses to URLs. 
+Your browser uses entries in the /etc/hosts file to override the IP-address-to-URL mapping returned by a DNS server. 
+The /etc/hosts file affects only the local computer.
+ip-address		custom_name
+
+Docker Compose is a container orchestration technology that’s intended to run a number of containers on a single host machine.
+
+fpm: Fast Process Manager interpreter that runs as a daemon and receives Fast/CGI requests
+php extensions required for wordpress
+https://www.geek17.com/fr/content/debian-10-buster-installer-et-configurer-la-derniere-version-de-nginx-et-php-73-fpm-105
+
+command mariadb:
+SELECT * from my_database.my_table;
+<==>
+USE my_database;
+SELECT * FROM my_table;
