@@ -178,7 +178,9 @@ Every component of the stack communicates with each other :
 </details>
 
 <details>
-    <summary><h2><img align="left" src="./images/nginx_logo.png" alt="nginx_logo" width=3% height=3%>NGINX</h2></summary>
+    <summary><h2>NGINX</h2></summary>
+        <img align"left" src="./images/nginx_logo.png" alt="nginx_logo" width=3% height=3%>
+    
 <h3> 🔐 SSL / TLS </h3>
 The **server certificate** is a public entity. It is sent to every client that connects to the server.
 
