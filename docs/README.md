@@ -12,9 +12,10 @@ Docker is a popular virtualization tool that replicates a specific operating env
 ![VM_vs_Container](images/VM_vs_container.png "VM vs Container")
 
 ### 💻 DOCKER ENGINE
-![Docker engine](images/docker_engine.png "Docker engine")
 
-<img src="./images/docker_engine.png" alt="docker_engine" width=50% height=50%>
+Docker engine is a part of Docker which create and run the Docker containers. It is the layer on which Docker runs and is installed on the host machine. It plays the controller's role.
+
+<img align="right" src="./images/docker_engine.png" alt="docker_engine" width=50% height=50%>
 
 
 ### 🏗 DOCKER ARCHITECTURE
