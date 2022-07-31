@@ -13,19 +13,54 @@ Docker is a popular virtualization tool that replicates a specific operating env
 
 ### 💻 DOCKER ENGINE
 
-<img align="right" src="./images/docker_engine.png" alt="docker_engine" width=50% height=50%>
+<img align="right" src="./images/docker_engine.png" alt="docker_engine" width=35% height=53%>
 
 Docker engine is a part of Docker which create and run the Docker containers. It is the layer on which Docker runs and is installed on the host machine. It plays the controller's role.
 
+- Docker CLI 👨‍💻
+Command line interface used to perform actions: running/stopping containers...
+- REST API server 💻
+Interface that programs can use to talk to the daemon and provides instructions.
+- Docker Daemon 😈
+Background process that manages docker objects: images, containers, volumes, networks...
+
 ### 🏗 DOCKER ARCHITECTURE
 ![Docker architecture](images/docker_architecture.png "Docker architecture")
-<img align="right" src="./images/docker_definitions.png" alt="docker_definition" width=50% height=50%>
+<img align="right" src="./images/docker_definitions.png" alt="docker_definition" width=35% height=35%>
 📸  IMAGE
 - read-only
 - like a snapshot of a container’s file system and contain both your application and its dependencies
 - is an immutable (unchangeable) file that contains the source code, libraries, dependencies, tools, and other files needed for an application to run
 - essentially govern and shape containers
 - can exist without containers
+
+📦  CONTAINER
+- read-write
+- is a running environment of an image
+- running a containerized environment means creating a read-write copy of that filesystem (docker image) inside the container
+- needs to run an image to exist, is dependent on images
+- once the task is complete, the container exits, it means a container only lives as long as the process inside it is alive
+
+The two concepts exist as essential components (or rather phases) in the process of running a Docker container. Having a running container is the final “phase” of that process.
+
+When a container is started, Docker loads the read-only image layer, adds a read-write layer on top of the image stack, and mounts volumes onto the container filesystem.
+
+**🗂**  **VOLUME**
+
+- used to persist data outside the container so it can be backed up or shared
+- is an independent file system entirely managed by Docker and exists as a normal file or directory on the host, where data is persisted
+- data gets automatically replicated
+- folder in physical host file system is mounted into the virtual file system of docker
+- 3 volumes type :
+    - Host volumes : *[host_directory:container_directory]*
+        
+        You decide where on the host file system the reference is made
+        
+    - Anonymous volumes : *[container_directory]*
+        
+        For each container a volume is generated that gets mounted (automatically generated folder: /var/lib/docker/volumes/...)
+        
+    - Named volumes : *[name:container_directory]*
 
 ### ⌨️ DOCKER COMMANDS
 ![Docker lifecycle](images/docker_lifecycle.png "Docker lifecycle")
