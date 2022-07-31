@@ -13,9 +13,9 @@ Docker is a popular virtualization tool that replicates a specific operating env
 
 ### 💻 DOCKER ENGINE
 ![Docker engine](images/docker_engine.png "Docker engine")
-```html
-<img src="./images/docker_engine.png" alt="docker_engine" width="320">
-```
+
+<img src="./images/docker_engine.png" alt="docker_engine" width=50% height=50%>
+
 
 ### 🏗 DOCKER ARCHITECTURE
 ![Docker architecture](images/docker_architecture.png "Docker architecture")
