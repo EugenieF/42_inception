@@ -93,6 +93,17 @@ When a container is started, Docker loads the read-only image layer, adds a read
 ### 🔥 DOCKER ADVANTAGES
 Docker containers enable developers to focus their efforts on application “content” by separating applications from the constraints of infrastructure.
 Dockerized applications are instantly portable to any infrastructure – laptop, bare‑metal server, VM, or cloud – making them modular components that can be readily assembled and reassembled into fully featured distributed applications and continuously innovated on in real time.
+
+A Docker container should have just one program running inside it. One container = one process.
+But why is it recommended for a container to run just one process ? There are various benefits to running one process per container :
+- **Isolation**: By placing each process in a separate container, you gain the benefits of isolating the process so that it can’t interfere with others.
+- **Easier to scale**: When a container consists of just one single process, it is easier to scale the application by creating more instances of the container.
+- **Easier to build and test**
+- **Components can be upgraded independently**
+- **Better reusability**: One of the benefits of a container-based application is that it can be run for different purposes and in different environments, by just changing its configuration. This makes a container like a building block. 
+- **Easier to collect logs**
+- **Simpler to manage with Docker**: Docker watches your application’s process (PID 1), and uses this to report the event that your container has stopped. 
+
 </details>
 
 <details>
