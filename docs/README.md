@@ -346,4 +346,4 @@ sudo service mysql stop
 </details>
 
 # 👉🏻 RECAP’
-![Inception Recap'](images/recapInception.png "Inception Recap'")
+![Inception Recap'](images/42inceptionRecap.png "Inception Recap'")
