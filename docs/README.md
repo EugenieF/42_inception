@@ -6,7 +6,7 @@
 #  🐳 DOCKER
 
 <details>
-    <summary><h2> 🔎 WHAT’S DOCKER ?</h2></summary>
+    <summary><h2>&nbsp&nbsp🔎 What’s Docker ?</h2></summary>
     Docker is a popular virtualization tool that replicates a specific operating environment on top of a host OS. Each environment is called a container. It allows you to deploy your application as a lightweight process set rather than a complete virtual machine.
 
 ### ⚡️ VM vs CONTAINER
@@ -42,7 +42,6 @@ Docker engine is a part of Docker which create and run the Docker containers. It
 <p><br/><br/><p/>
 
 ### 🏗 DOCKER ARCHITECTURE
-
 
 <img align="left" src="./images/docker_architecture.png" alt="docker_architecture" width=68% height=68%>
 <img align="right" src="./images/docker_definitions.png" alt="docker_definition" width=28% height=28%>
@@ -107,7 +106,7 @@ But why is it recommended for a container to run just one process ? There are va
 </details>
 
 <details>
-<summary><h2>📄 DOCKERFILE</h2></summary>
+<summary><h2>&nbsp&nbsp📄 Dockerfile</h2></summary>
 
 <img align="right" src="./images/what-is-docker-container.png" alt="what-is-docker-container" width=50% height=50%>
 <p align="left">
@@ -158,7 +157,7 @@ Dumb-init spawns your process as its only child, and proxies signals to it. It w
 
 
 <details>
-<summary><h2>🐙 DOCKER-COMPOSE</h2></summary>
+<summary><h2>&nbsp&nbsp🐙 Docker-compose</h2></summary>
 
 <img align="left" src="./images/docker_compose_logo.png" alt="Compose logo" width=5% height=5%>
 
@@ -173,7 +172,7 @@ Dumb-init spawns your process as its only child, and proxies signals to it. It w
 # ♻️ LEMP STACK
 
 <details>
-    <summary><h2> 🔎 WHAT’S A LEMP STACK ?</h2></summary>
+    <summary><h2>&nbsp&nbsp🤔 What’s a LEMP Stack ?</h2></summary>
     
 The subject requests us to create a LEMP stack :
 
@@ -189,8 +188,8 @@ Every component of the stack communicates with each other :
 </details>
 
 <details>
-    <summary><h2>NGINX</h2></summary>
-        <img align"left" src="./images/nginx_logo.png" alt="nginx_logo" width=3% height=3%>
+    <summary><h2>&nbsp&nbsp🌐&nbspNginx</h2></summary>
+    <img align"left" src="./images/nginx_logo.png" alt="nginx_logo" width=3% height=3%>
     
 <h3> 🔐 SSL / TLS </h3>
 The **server certificate** is a public entity. It is sent to every client that connects to the server.
@@ -241,8 +240,8 @@ The root directive specifies the file system path in which to search for the sta
 </details>
 
 <details>
-<summary><h2><img align="left" src="./images/mariadb.png" alt="MariaDB logo" width=7% height=7%>MARIADB</h2></summary>
-
+<summary><h2>&nbsp&nbsp🦭 MariaDB</h2></summary>
+<img align="left" src="./images/mariadb.png" alt="MariaDB logo" width=7% height=7%>
 <p>
     <br/>
     MariaDB Server manages access to the MariaDB data directory that contains databases and tables. When MariaDB server starts, it listens for network connections from client programs and manages access to databases on behalf of those clients.
@@ -285,8 +284,8 @@ SELECT * FROM my_table;
 </details>
 
 <details>
-<summary><h2><img align="left" src="./images/wordpress_logo.png" alt="wordpress logo" width=5% height=5%>PHP-WORDPRESS</h2></summary>
-
+<summary><h2>&nbsp&nbsp📝 Php-WordPress</h2></summary>
+<img align="left" src="./images/wordpress_logo.png" alt="wordpress logo" width=5% height=5%>
 WordPress is a Content Management System (CMS). It is a PHP based application written entirely in PHP. WordPress requires php-extensions to work properly.
 
 WP-Cli : WordPress command line interface
@@ -307,13 +306,23 @@ PHP-FPM can listen on Unix sockets or TCP sockets (that's what we use here).
 📄 Config file : /etc/php/7.3/fpm/pool.d/www.conf
 ```
 ![Php processing](images/php_processing_schema.png "Php processing")
+    
+Access your wordpress :
+```html
+https://login.42.fr
+```
+Access your admin account :
+```html
+https://login.42.fr/wp-admin/
+```   
+    
 </details>
 
 
  # ⚙️ VM CONFIG
 
 <details>
-<summary><h2>🔩 CONFIGURATION</h2></summary>
+<summary><h2>&nbsp&nbsp🔩 Configuration</h2></summary>
 
 [📌 README to setup our VM](https://github.com/llescure/42_Inception)
 
