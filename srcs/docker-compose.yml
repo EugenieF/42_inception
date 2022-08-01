@@ -87,6 +87,3 @@ volumes:
       type: none
       device: /home/efrancon/data/wordpress_volume
       o: bind
-
-
-# <==> docker volume create --driver local --opt type=none --opt device=/home/efrancon/data/wordpress_data --opt o=bind wordpress_data

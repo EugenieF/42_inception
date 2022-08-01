@@ -1,12 +1,16 @@
-DOCKER_COMPOSE_FILE	= srcs/docker-compose.yml
+DOCKER_COMPOSE_FILE		= srcs/docker-compose.yml
 
-DATABASE_VOLUME		= /home/efrancon/data/mariadb_volume
+DATABASE_VOLUME			= /home/efrancon/data/mariadb_volume
 
-WORDPRESS_VOLUME	= /home/efrancon/data/wordpress_volume
+WORDPRESS_VOLUME		= /home/efrancon/data/wordpress_volume
 
-MKDIR				= mkdir -p
+DATABASE_DOCKER_VOLUME	= srcs_mariadb_volume
 
-RM					= rm -rf
+WORDPRESS_DOCKER_VOLUME	= srcs_wordpress_volume
+
+MKDIR					= mkdir -p
+
+RM						= rm -rf
 
 all:	up
 
@@ -30,7 +34,8 @@ clean:		down
 fclean:		clean
 		sudo $(RM) $(DATABASE_VOLUME)
 		sudo $(RM) $(WORDPRESS_VOLUME)
-		docker system prune --all --force --volumes
+		docker system prune --all --force
+		docker volume rm $(DATABASE_DOCKER_VOLUME) $(WORDPRESS_DOCKER_VOLUME)
 
 re:			fclean all
 
