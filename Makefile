@@ -30,7 +30,7 @@ clean:		down
 fclean:		clean
 		sudo $(RM) $(DATABASE_VOLUME)
 		sudo $(RM) $(WORDPRESS_VOLUME)
-		docker system prune --all --force
+		docker system prune --all --force --volumes
 
 re:			fclean all
 
