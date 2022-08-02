@@ -237,6 +237,10 @@ Each location defines its own scenario of what happens to requests that are mapp
 
 The root directive specifies the file system path in which to search for the static files to serve. The request URI associated with the location is appended to the path to obtain the full name of the static file to serve.
 
+We launch the container with the command :
+```bash
+nginx -g daemon off
+```
 </details>
 
 <details>
@@ -249,7 +253,7 @@ The root directive specifies the file system path in which to search for the sta
 
 ***mysqld*** is the actual MariaDB Server binary.
 
-***mysqld_safe*** starts mysqld with some extra safety features, it is the recommended way to start mysqld server.
+***mysqld_safe*** is the recommended way to start a mysqld server on Unix. mysqld_safe adds some safety features such as restarting the server when an error occurs and logging runtime information to an error log file.
 
 ***mysql_install_db*** initializes the MariaDB data directory and creates the system tables in the mysql database, if they do not exist.
 
@@ -281,6 +285,16 @@ or
 SELECT * FROM my_table;
 - SHOW TABLES;
 
+> From MariaDB 10.5.2 :
+> - **mariadb** is the name of the command-line client, **mysql** is a symlink
+> - **mariadb-install-db** is the binary name, **mysql_install_db** is a symlink
+> - **mariadbd** is the name of the binary, **mysqld** is a symlink
+> - **mariadbd-safe** is the name of the server, **mysqld_safe** is a symlink
+
+We execute a script to setup the database. Then we launch the container with the command :
+```bash
+mysqld_safe
+```
 </details>
 
 <details>
@@ -315,9 +329,28 @@ Access your admin account :
 ```html
 https://login.42.fr/wp-admin/
 ```   
-    
+
+We setup the container with a script. Then we start the container with the command :
+```bash
+php-fpm7.3 -F
+```
 </details>
 
+<details>
+<summary><h2>&nbsp&nbsp🌉 Network</h2></summary>
+
+```bash
+docker network ls
+```
+</details>
+
+<details>
+<summary><h2>&nbsp&nbsp📦 Volume</h2></summary>
+
+```bash
+docker volume ls
+```
+</details>
 
  # ⚙️ VM CONFIG
 
