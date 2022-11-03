@@ -1,4 +1,4 @@
-
+![42](images/42Project.png "42")
 ![Inception](images/inceptionTitle.png "Inception")
 
 📝 *Subject : Creating a docker-based WordPress LEMP stack using docker-compose on Alpine Linux or Debian Buster. The whole project has to be done in our personal virtual machine.*
